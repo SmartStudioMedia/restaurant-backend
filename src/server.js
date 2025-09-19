@@ -249,6 +249,22 @@ app.post('/admin/orders/:id/status', adminAuth, (req, res) => {
 // Health
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// Debug endpoint to test database operations
+app.get('/api/debug', (req, res) => {
+  try {
+    const categories = db.prepare('SELECT * FROM categories ORDER BY sort_order').all();
+    const items = db.prepare('SELECT * FROM items ORDER BY id').all();
+    res.json({ 
+      success: true, 
+      categories: categories.length, 
+      items: items.length,
+      sampleItem: items[0] || null
+    });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
+  }
+});
+
 // Homepage
 app.get('/', (req, res) => {
   res.json({ 
