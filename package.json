@@ -6,13 +6,12 @@
   "scripts": {
     "dev": "nodemon --legacy-watch src/server.js",
     "start": "node src/server.js",
-    "db:reset": "node src/db.js --reset"
+    "db:reset": "node src/db-simple.js --reset"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "better-sqlite3": "^12.2.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
