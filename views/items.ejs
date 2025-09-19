@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin - Items</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <style>
+      body{font-family: system-ui, Arial, sans-serif; margin:0}
+      header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#f97316;color:#fff}
+      nav a{margin-right:12px;color:#fff;text-decoration:none}
+      .container{padding:16px}
+      table{width:100%;border-collapse:collapse}
+      th,td{border:1px solid #ddd;padding:8px}
+      th{background:#fafafa;text-align:left}
+      input,select,textarea{padding:6px 8px}
+      .btn{padding:6px 10px;border:1px solid #ccc;background:#fff;cursor:pointer}
+      .btn-primary{background:#f97316;color:#fff;border-color:#f97316}
+      .badge{display:inline-block;padding:2px 6px;border-radius:10px;background:#eee}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div><strong>AROMA Admin</strong></div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/items">Items</a>
+        <a href="/admin/tables">Tables</a>
+        <a href="/admin/orders">Orders</a>
+        <a href="/admin/settings">Settings</a>
+      </nav>
+    </header>
+    <div class="container">
+      <h2>Items</h2>
+
+<form method="post" action="/admin/items/create" style="margin-bottom:16px; display:grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap:8px">
+  <select name="category_id" required>
+    <% cats.forEach(c => { %>
+      <option value="<%= c.id %>"><%= c.name %></option>
+    <% }) %>
+  </select>
+  <input name="name" placeholder="Name" required />
+  <input name="price" type="number" step="0.01" placeholder="Price" required />
+  <input name="image_url" placeholder="Image URL" />
+  <input name="video_url" placeholder="Video URL" />
+  <input name="sort_order" type="number" placeholder="Sort" />
+  <input name="description" placeholder="Description" style="grid-column: span 3 / span 3" />
+  <input name="nutrition" placeholder="Nutrition" />
+  <input name="ingredients" placeholder="Ingredients" />
+  <input name="allergies" placeholder="Allergies" />
+  <input name="prep_time" placeholder="Prep Time" />
+  <label><input type="checkbox" name="hidden" value="1" /> Hidden</label>
+  <button class="btn btn-primary" type="submit">Create</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Category</th><th>Name</th><th>Price</th><th>Hidden</th><th>Image</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% items.forEach(i => { %>
+      <tr>
+        <td><%= i.id %></td>
+        <td><%= i.category_name %></td>
+        <td><%= i.name %></td>
+        <td>€<%= Number(i.price).toFixed(2) %></td>
+        <td><%= i.hidden ? 'Yes' : 'No' %></td>
+        <td><% if (i.image_url) { %><img src="<%= i.image_url %>" alt="" style="height:40px" /><% } %></td>
+        <td>
+          <form method="post" action="/admin/items/<%= i.id %>/update" style="display:flex; gap:6px; flex-wrap:wrap">
+            <select name="category_id" required>
+              <% cats.forEach(c => { %>
+                <option value="<%= c.id %>" <%= c.id === i.category_id ? 'selected' : '' %>><%= c.name %></option>
+              <% }) %>
+            </select>
+            <input name="name" value="<%= i.name %>"/>
+            <input name="price" type="number" step="0.01" value="<%= i.price %>" />
+            <input name="image_url" value="<%= i.image_url || '' %>" />
+            <input name="video_url" value="<%= i.video_url || '' %>" />
+            <input name="sort_order" type="number" value="<%= i.sort_order || 0 %>" />
+            <input name="description" value="<%= i.description || '' %>" />
+            <input name="nutrition" value="<%= i.nutrition || '' %>" />
+            <input name="ingredients" value="<%= i.ingredients || '' %>" />
+            <input name="allergies" value="<%= i.allergies || '' %>" />
+            <input name="prep_time" value="<%= i.prep_time || '' %>" />
+            <label><input type="checkbox" name="hidden" value="1" <%= i.hidden ? 'checked' : '' %>/> Hidden</label>
+            <button class="btn btn-primary" type="submit">Save</button>
+          </form>
+          <form method="post" action="/admin/items/<%= i.id %>/delete" onsubmit="return confirm('Delete item?')">
+            <button class="btn" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+    </div>
+  </body>
+</html>
