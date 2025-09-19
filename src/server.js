@@ -237,8 +237,8 @@ app.post('/admin/orders/:id/status', adminAuth, (req, res) => {
 // Health
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server listening on port ${PORT}`);
 });
 
 
