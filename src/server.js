@@ -19,6 +19,27 @@ const stripe = STRIPE_SECRET ? require('stripe')(STRIPE_SECRET) : null;
 migrate();
 seed();
 
+// Force add menu items if they don't exist
+const items = db.prepare('SELECT * FROM items ORDER BY id').all();
+if (items.length === 0) {
+  console.log('No items found, adding default menu...');
+  const defaultItems = [
+    { category_id: 1, name: 'Classic Burger', description: 'Juicy grilled beef patty with cheese and lettuce', price: 8.5, image_url: 'https://picsum.photos/id/1011/900/540', video_url: '', nutrition: 'Proteins: 25g, Carbs: 40g, Fats: 20g', ingredients: 'Beef, Cheese, Lettuce, Tomato, Bun', allergies: 'Gluten, Dairy', prep_time: '10 min', hidden: 0, sort_order: 1 },
+    { category_id: 1, name: 'Veggie Burger', description: 'Grilled veggie patty with avocado', price: 7.0, image_url: 'https://picsum.photos/id/1012/900/540', video_url: '', nutrition: 'Proteins: 15g, Carbs: 35g, Fats: 10g', ingredients: 'Veggie patty, Avocado, Bun', allergies: 'Gluten', prep_time: '8 min', hidden: 0, sort_order: 2 },
+    { category_id: 1, name: 'Chicken Burger', description: 'Grilled chicken breast with fresh vegetables', price: 9.5, image_url: 'https://picsum.photos/id/1015/900/540', video_url: '', nutrition: 'Proteins: 30g, Carbs: 35g, Fats: 12g', ingredients: 'Chicken, Lettuce, Tomato, Bun', allergies: 'Gluten', prep_time: '12 min', hidden: 0, sort_order: 3 },
+    { category_id: 2, name: 'French Fries', description: 'Crispy golden fries', price: 3.0, image_url: 'https://picsum.photos/id/1013/900/540', video_url: '', nutrition: 'Proteins: 3g, Carbs: 40g, Fats: 15g', ingredients: 'Potatoes, Oil, Salt', allergies: 'None', prep_time: '5 min', hidden: 0, sort_order: 1 },
+    { category_id: 2, name: 'Onion Rings', description: 'Crispy battered onion rings', price: 4.5, image_url: 'https://picsum.photos/id/1016/900/540', video_url: '', nutrition: 'Proteins: 2g, Carbs: 35g, Fats: 18g', ingredients: 'Onions, Flour, Oil', allergies: 'Gluten', prep_time: '6 min', hidden: 0, sort_order: 2 },
+    { category_id: 3, name: 'Cola', description: 'Chilled refreshing drink', price: 2.0, image_url: 'https://picsum.photos/id/1014/900/540', video_url: '', nutrition: 'Proteins: 0g, Carbs: 40g, Fats: 0g', ingredients: 'Water, Sugar, Flavorings', allergies: 'None', prep_time: '1 min', hidden: 0, sort_order: 1 },
+    { category_id: 3, name: 'Orange Juice', description: 'Fresh squeezed orange juice', price: 3.5, image_url: 'https://picsum.photos/id/1017/900/540', video_url: '', nutrition: 'Proteins: 1g, Carbs: 35g, Fats: 0g', ingredients: 'Fresh oranges', allergies: 'None', prep_time: '2 min', hidden: 0, sort_order: 2 }
+  ];
+  
+  for (const item of defaultItems) {
+    db.prepare(`INSERT INTO items (category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(item.category_id, item.name, item.description, item.price, item.image_url, item.video_url, item.nutrition, item.ingredients, item.allergies, item.prep_time, item.hidden, item.sort_order);
+  }
+  console.log('Default menu items added!');
+}
+
 const app = express();
 app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }));
 app.use(bodyParser.json());
