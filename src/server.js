@@ -265,6 +265,22 @@ app.get('/api/debug', (req, res) => {
   }
 });
 
+// Simple API to add menu items (alternative to admin panel)
+app.post('/api/add-item', (req, res) => {
+  try {
+    const { category_id, name, description, price, image_url } = req.body;
+    console.log('Adding item via API:', { category_id, name, price });
+    
+    db.prepare(`INSERT INTO items (category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(Number(category_id), name, description || '', Number(price), image_url || '', '', '', '', '', '', 0, 0);
+    
+    res.json({ success: true, message: 'Item added successfully' });
+  } catch (error) {
+    console.error('Error adding item:', error);
+    res.json({ success: false, error: error.message });
+  }
+});
+
 // Homepage
 app.get('/', (req, res) => {
   res.json({ 
