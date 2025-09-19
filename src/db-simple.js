@@ -266,8 +266,8 @@ function migrate() {
 function seed() {
   loadData();
   
-  // Only seed if no categories exist
-  if (data.categories.length === 0) {
+  // Always seed with default data (for development)
+  if (data.categories.length === 0 || data.items.length < 7) {
     const categories = [
       { id: 1, key: 'burgers', name: 'Burgers', icon: '🍔', sort_order: 1, hidden: 0 },
       { id: 2, key: 'sides', name: 'Sides', icon: '🍟', sort_order: 2, hidden: 0 },

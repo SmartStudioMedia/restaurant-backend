@@ -68,6 +68,21 @@
     },
     {
       "id": 3,
+      "category_id": 1,
+      "name": "Chicken Burger",
+      "description": "Grilled chicken breast with fresh vegetables",
+      "price": 9.5,
+      "image_url": "https://picsum.photos/id/1015/900/540",
+      "video_url": "",
+      "nutrition": "Proteins: 30g, Carbs: 35g, Fats: 12g",
+      "ingredients": "Chicken, Lettuce, Tomato, Bun",
+      "allergies": "Gluten",
+      "prep_time": "12 min",
+      "hidden": 0,
+      "sort_order": 3
+    },
+    {
+      "id": 4,
       "category_id": 2,
       "name": "French Fries",
       "description": "Crispy golden fries",
@@ -82,7 +97,22 @@
       "sort_order": 1
     },
     {
-      "id": 4,
+      "id": 5,
+      "category_id": 2,
+      "name": "Onion Rings",
+      "description": "Crispy battered onion rings",
+      "price": 4.5,
+      "image_url": "https://picsum.photos/id/1016/900/540",
+      "video_url": "",
+      "nutrition": "Proteins: 2g, Carbs: 35g, Fats: 18g",
+      "ingredients": "Onions, Flour, Oil",
+      "allergies": "Gluten",
+      "prep_time": "6 min",
+      "hidden": 0,
+      "sort_order": 2
+    },
+    {
+      "id": 6,
       "category_id": 3,
       "name": "Cola",
       "description": "Chilled refreshing drink",
@@ -95,58 +125,73 @@
       "prep_time": "1 min",
       "hidden": 0,
       "sort_order": 1
+    },
+    {
+      "id": 7,
+      "category_id": 3,
+      "name": "Orange Juice",
+      "description": "Fresh squeezed orange juice",
+      "price": 3.5,
+      "image_url": "https://picsum.photos/id/1017/900/540",
+      "video_url": "",
+      "nutrition": "Proteins: 1g, Carbs: 35g, Fats: 0g",
+      "ingredients": "Fresh oranges",
+      "allergies": "None",
+      "prep_time": "2 min",
+      "hidden": 0,
+      "sort_order": 2
     }
   ],
   "tables": [
     {
       "id": 1,
       "number": "1",
-      "token": "t1-sdwp2kpb"
+      "token": "t1-rfbmwj0s"
     },
     {
       "id": 2,
       "number": "2",
-      "token": "t2-uw2llodb"
+      "token": "t2-dt66gvwo"
     },
     {
       "id": 3,
       "number": "3",
-      "token": "t3-yuqfnrlo"
+      "token": "t3-twzfcln4"
     },
     {
       "id": 4,
       "number": "4",
-      "token": "t4-wlbi17gn"
+      "token": "t4-5sftemr5"
     },
     {
       "id": 5,
       "number": "5",
-      "token": "t5-9fj1d3i2"
+      "token": "t5-5o2qvd2g"
     },
     {
       "id": 6,
       "number": "6",
-      "token": "t6-a3f2soyx"
+      "token": "t6-2btwcnhd"
     },
     {
       "id": 7,
       "number": "7",
-      "token": "t7-6bxnm0mz"
+      "token": "t7-7cv3d9qi"
     },
     {
       "id": 8,
       "number": "8",
-      "token": "t8-ve07axbo"
+      "token": "t8-9du2i4ef"
     },
     {
       "id": 9,
       "number": "9",
-      "token": "t9-c304sdrg"
+      "token": "t9-z3ctlfx9"
     },
     {
       "id": 10,
       "number": "10",
-      "token": "t10-9nsq5b11"
+      "token": "t10-5prtarg7"
     }
   ],
   "orders": [],
