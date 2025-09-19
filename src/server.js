@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const QRCode = require('qrcode');
 
-const { db, migrate, seed } = require('./db-simple');
+const { db, migrate, seed } = require('./db-fixed');
 
 const PORT = process.env.PORT || 4000;
 const ADMIN_USER = process.env.ADMIN_USER || 'admin';
