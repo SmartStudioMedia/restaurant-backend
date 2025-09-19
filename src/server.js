@@ -171,16 +171,28 @@ app.get('/admin/items', adminAuth, (req, res) => {
 
 app.post('/admin/items/create', adminAuth, (req, res) => {
   const { category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order } = req.body;
-  db.prepare(`INSERT INTO items (category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`)
-    .run(Number(category_id), name, description || '', Number(price), image_url || '', video_url || '', nutrition || '', ingredients || '', allergies || '', prep_time || '', hidden ? 1 : 0, Number(sort_order || 0));
+  console.log('Creating item:', { category_id, name, price });
+  try {
+    db.prepare(`INSERT INTO items (category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(Number(category_id), name, description || '', Number(price), image_url || '', video_url || '', nutrition || '', ingredients || '', allergies || '', prep_time || '', hidden ? 1 : 0, Number(sort_order || 0));
+    console.log('Item created successfully');
+  } catch (error) {
+    console.error('Error creating item:', error);
+  }
   res.redirect('/admin/items');
 });
 
 app.post('/admin/items/:id/update', adminAuth, (req, res) => {
   const id = Number(req.params.id);
   const { category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order } = req.body;
-  db.prepare(`UPDATE items SET category_id=?, name=?, description=?, price=?, image_url=?, video_url=?, nutrition=?, ingredients=?, allergies=?, prep_time=?, hidden=?, sort_order=? WHERE id=?`)
-    .run(Number(category_id), name, description || '', Number(price), image_url || '', video_url || '', nutrition || '', ingredients || '', allergies || '', prep_time || '', hidden ? 1 : 0, Number(sort_order || 0), id);
+  console.log('Updating item:', { id, category_id, name, price });
+  try {
+    db.prepare(`UPDATE items SET category_id=?, name=?, description=?, price=?, image_url=?, video_url=?, nutrition=?, ingredients=?, allergies=?, prep_time=?, hidden=?, sort_order=? WHERE id=?`)
+      .run(Number(category_id), name, description || '', Number(price), image_url || '', video_url || '', nutrition || '', ingredients || '', allergies || '', prep_time || '', hidden ? 1 : 0, Number(sort_order || 0), id);
+    console.log('Item updated successfully');
+  } catch (error) {
+    console.error('Error updating item:', error);
+  }
   res.redirect('/admin/items');
 });
 
