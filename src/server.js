@@ -56,109 +56,109 @@ app.use((req, res, next) => {
   next();
 });
 
+// In-memory menu data (can be edited and saved)
+let menuData = {
+  categories: [
+    { key: 'burgers', name: 'Burgers', icon: '🍔' },
+    { key: 'sides', name: 'Sides', icon: '🍟' },
+    { key: 'drinks', name: 'Drinks', icon: '🥤' }
+  ],
+  menu: {
+    burgers: [
+      {
+        id: 1,
+        price: 8.5,
+        image: 'https://picsum.photos/id/1011/900/540',
+        video: '',
+        name: { en: 'Classic Burger' },
+        description: { en: 'Juicy grilled beef patty with cheese and lettuce' },
+        nutrition: { en: 'Proteins: 25g, Carbs: 40g, Fats: 20g' },
+        ingredients: { en: 'Beef, Cheese, Lettuce, Tomato, Bun' },
+        allergies: { en: 'Gluten, Dairy' },
+        prepTime: { en: '10 min' }
+      },
+      {
+        id: 2,
+        price: 7.0,
+        image: 'https://picsum.photos/id/1012/900/540',
+        video: '',
+        name: { en: 'Veggie Burger' },
+        description: { en: 'Grilled veggie patty with avocado' },
+        nutrition: { en: 'Proteins: 15g, Carbs: 35g, Fats: 10g' },
+        ingredients: { en: 'Veggie patty, Avocado, Bun' },
+        allergies: { en: 'Gluten' },
+        prepTime: { en: '8 min' }
+      },
+      {
+        id: 3,
+        price: 9.5,
+        image: 'https://picsum.photos/id/1015/900/540',
+        video: '',
+        name: { en: 'Chicken Burger' },
+        description: { en: 'Grilled chicken breast with fresh vegetables' },
+        nutrition: { en: 'Proteins: 30g, Carbs: 35g, Fats: 12g' },
+        ingredients: { en: 'Chicken, Lettuce, Tomato, Bun' },
+        allergies: { en: 'Gluten' },
+        prepTime: { en: '12 min' }
+      }
+    ],
+    sides: [
+      {
+        id: 4,
+        price: 3.0,
+        image: 'https://picsum.photos/id/1013/900/540',
+        video: '',
+        name: { en: 'French Fries' },
+        description: { en: 'Crispy golden fries' },
+        nutrition: { en: 'Proteins: 3g, Carbs: 40g, Fats: 15g' },
+        ingredients: { en: 'Potatoes, Oil, Salt' },
+        allergies: { en: 'None' },
+        prepTime: { en: '5 min' }
+      },
+      {
+        id: 5,
+        price: 4.5,
+        image: 'https://picsum.photos/id/1016/900/540',
+        video: '',
+        name: { en: 'Onion Rings' },
+        description: { en: 'Crispy battered onion rings' },
+        nutrition: { en: 'Proteins: 2g, Carbs: 35g, Fats: 18g' },
+        ingredients: { en: 'Onions, Flour, Oil' },
+        allergies: { en: 'Gluten' },
+        prepTime: { en: '6 min' }
+      }
+    ],
+    drinks: [
+      {
+        id: 6,
+        price: 2.0,
+        image: 'https://picsum.photos/id/1014/900/540',
+        video: '',
+        name: { en: 'Cola' },
+        description: { en: 'Chilled refreshing drink' },
+        nutrition: { en: 'Proteins: 0g, Carbs: 40g, Fats: 0g' },
+        ingredients: { en: 'Water, Sugar, Flavorings' },
+        allergies: { en: 'None' },
+        prepTime: { en: '1 min' }
+      },
+      {
+        id: 7,
+        price: 3.5,
+        image: 'https://picsum.photos/id/1017/900/540',
+        video: '',
+        name: { en: 'Orange Juice' },
+        description: { en: 'Fresh squeezed orange juice' },
+        nutrition: { en: 'Proteins: 1g, Carbs: 35g, Fats: 0g' },
+        ingredients: { en: 'Fresh oranges' },
+        allergies: { en: 'None' },
+        prepTime: { en: '2 min' }
+      }
+    ]
+  }
+};
+
 // Public API
 app.get('/api/menu', (req, res) => {
-  // Hardcoded menu data to ensure it always works
-  const menuData = {
-    categories: [
-      { key: 'burgers', name: 'Burgers', icon: '🍔' },
-      { key: 'sides', name: 'Sides', icon: '🍟' },
-      { key: 'drinks', name: 'Drinks', icon: '🥤' }
-    ],
-    menu: {
-      burgers: [
-        {
-          id: 1,
-          price: 8.5,
-          image: 'https://picsum.photos/id/1011/900/540',
-          video: '',
-          name: { en: 'Classic Burger' },
-          description: { en: 'Juicy grilled beef patty with cheese and lettuce' },
-          nutrition: { en: 'Proteins: 25g, Carbs: 40g, Fats: 20g' },
-          ingredients: { en: 'Beef, Cheese, Lettuce, Tomato, Bun' },
-          allergies: { en: 'Gluten, Dairy' },
-          prepTime: { en: '10 min' }
-        },
-        {
-          id: 2,
-          price: 7.0,
-          image: 'https://picsum.photos/id/1012/900/540',
-          video: '',
-          name: { en: 'Veggie Burger' },
-          description: { en: 'Grilled veggie patty with avocado' },
-          nutrition: { en: 'Proteins: 15g, Carbs: 35g, Fats: 10g' },
-          ingredients: { en: 'Veggie patty, Avocado, Bun' },
-          allergies: { en: 'Gluten' },
-          prepTime: { en: '8 min' }
-        },
-        {
-          id: 3,
-          price: 9.5,
-          image: 'https://picsum.photos/id/1015/900/540',
-          video: '',
-          name: { en: 'Chicken Burger' },
-          description: { en: 'Grilled chicken breast with fresh vegetables' },
-          nutrition: { en: 'Proteins: 30g, Carbs: 35g, Fats: 12g' },
-          ingredients: { en: 'Chicken, Lettuce, Tomato, Bun' },
-          allergies: { en: 'Gluten' },
-          prepTime: { en: '12 min' }
-        }
-      ],
-      sides: [
-        {
-          id: 4,
-          price: 3.0,
-          image: 'https://picsum.photos/id/1013/900/540',
-          video: '',
-          name: { en: 'French Fries' },
-          description: { en: 'Crispy golden fries' },
-          nutrition: { en: 'Proteins: 3g, Carbs: 40g, Fats: 15g' },
-          ingredients: { en: 'Potatoes, Oil, Salt' },
-          allergies: { en: 'None' },
-          prepTime: { en: '5 min' }
-        },
-        {
-          id: 5,
-          price: 4.5,
-          image: 'https://picsum.photos/id/1016/900/540',
-          video: '',
-          name: { en: 'Onion Rings' },
-          description: { en: 'Crispy battered onion rings' },
-          nutrition: { en: 'Proteins: 2g, Carbs: 35g, Fats: 18g' },
-          ingredients: { en: 'Onions, Flour, Oil' },
-          allergies: { en: 'Gluten' },
-          prepTime: { en: '6 min' }
-        }
-      ],
-      drinks: [
-        {
-          id: 6,
-          price: 2.0,
-          image: 'https://picsum.photos/id/1014/900/540',
-          video: '',
-          name: { en: 'Cola' },
-          description: { en: 'Chilled refreshing drink' },
-          nutrition: { en: 'Proteins: 0g, Carbs: 40g, Fats: 0g' },
-          ingredients: { en: 'Water, Sugar, Flavorings' },
-          allergies: { en: 'None' },
-          prepTime: { en: '1 min' }
-        },
-        {
-          id: 7,
-          price: 3.5,
-          image: 'https://picsum.photos/id/1017/900/540',
-          video: '',
-          name: { en: 'Orange Juice' },
-          description: { en: 'Fresh squeezed orange juice' },
-          nutrition: { en: 'Proteins: 1g, Carbs: 35g, Fats: 0g' },
-          ingredients: { en: 'Fresh oranges' },
-          allergies: { en: 'None' },
-          prepTime: { en: '2 min' }
-        }
-      ]
-    }
-  };
-  
   res.json(menuData);
 });
 
@@ -283,22 +283,31 @@ app.get('/admin', adminAuth, (req, res) => {
 
 // Items CRUD (very minimal)
 app.get('/admin/items', adminAuth, (req, res) => {
-  // Hardcoded categories and items since we're using hardcoded menu
-  const cats = [
-    { id: 1, name: 'Burgers', key: 'burgers', icon: '🍔', sort_order: 1 },
-    { id: 2, name: 'Sides', key: 'sides', icon: '🍟', sort_order: 2 },
-    { id: 3, name: 'Drinks', key: 'drinks', icon: '🥤', sort_order: 3 }
-  ];
+  // Convert menuData to admin format
+  const cats = menuData.categories.map((cat, index) => ({
+    id: index + 1,
+    name: cat.name,
+    key: cat.key,
+    icon: cat.icon,
+    sort_order: index + 1
+  }));
   
-  const items = [
-    { id: 1, category_id: 1, name: 'Classic Burger', description: 'Juicy grilled beef patty with cheese and lettuce', price: 8.5, image_url: 'https://picsum.photos/id/1011/900/540', category_name: 'Burgers' },
-    { id: 2, category_id: 1, name: 'Veggie Burger', description: 'Grilled veggie patty with avocado', price: 7.0, image_url: 'https://picsum.photos/id/1012/900/540', category_name: 'Burgers' },
-    { id: 3, category_id: 1, name: 'Chicken Burger', description: 'Grilled chicken breast with fresh vegetables', price: 9.5, image_url: 'https://picsum.photos/id/1015/900/540', category_name: 'Burgers' },
-    { id: 4, category_id: 2, name: 'French Fries', description: 'Crispy golden fries', price: 3.0, image_url: 'https://picsum.photos/id/1013/900/540', category_name: 'Sides' },
-    { id: 5, category_id: 2, name: 'Onion Rings', description: 'Crispy battered onion rings', price: 4.5, image_url: 'https://picsum.photos/id/1016/900/540', category_name: 'Sides' },
-    { id: 6, category_id: 3, name: 'Cola', description: 'Chilled refreshing drink', price: 2.0, image_url: 'https://picsum.photos/id/1014/900/540', category_name: 'Drinks' },
-    { id: 7, category_id: 3, name: 'Orange Juice', description: 'Fresh squeezed orange juice', price: 3.5, image_url: 'https://picsum.photos/id/1017/900/540', category_name: 'Drinks' }
-  ];
+  // Flatten all items from all categories
+  const items = [];
+  Object.keys(menuData.menu).forEach(categoryKey => {
+    const category = menuData.categories.find(c => c.key === categoryKey);
+    menuData.menu[categoryKey].forEach(item => {
+      items.push({
+        id: item.id,
+        category_id: category ? menuData.categories.indexOf(category) + 1 : 1,
+        name: item.name.en,
+        description: item.description.en,
+        price: item.price,
+        image_url: item.image,
+        category_name: category ? category.name : 'Unknown'
+      });
+    });
+  });
   
   res.render('items', { cats, items });
 });
@@ -306,23 +315,115 @@ app.get('/admin/items', adminAuth, (req, res) => {
 app.post('/admin/items/create', adminAuth, (req, res) => {
   const { category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order } = req.body;
   console.log('Creating item:', { category_id, name, price });
-  // Since we're using hardcoded data, just redirect back with a message
-  res.redirect('/admin/items?success=created&note=hardcoded');
+  
+  try {
+    // Find the category key
+    const category = menuData.categories[category_id - 1];
+    if (!category) {
+      return res.redirect('/admin/items?error=Invalid category');
+    }
+    
+    // Create new item
+    const newItem = {
+      id: Date.now(), // Simple ID generation
+      price: parseFloat(price),
+      image: image_url || 'https://picsum.photos/900/540',
+      video: video_url || '',
+      name: { en: name },
+      description: { en: description || '' },
+      nutrition: { en: nutrition || '' },
+      ingredients: { en: ingredients || '' },
+      allergies: { en: allergies || '' },
+      prepTime: { en: prep_time || '' }
+    };
+    
+    // Add to menuData
+    if (!menuData.menu[category.key]) {
+      menuData.menu[category.key] = [];
+    }
+    menuData.menu[category.key].push(newItem);
+    
+    console.log('Item created successfully:', newItem);
+    res.redirect('/admin/items?success=created');
+  } catch (error) {
+    console.error('Error creating item:', error);
+    res.redirect('/admin/items?error=' + encodeURIComponent(error.message));
+  }
 });
 
 app.post('/admin/items/:id/update', adminAuth, (req, res) => {
   const id = Number(req.params.id);
   const { category_id, name, description, price, image_url, video_url, nutrition, ingredients, allergies, prep_time, hidden, sort_order } = req.body;
   console.log('Updating item:', { id, category_id, name, price });
-  // Since we're using hardcoded data, just redirect back with a message
-  res.redirect('/admin/items?success=updated&note=hardcoded');
+  
+  try {
+    // Find the category key
+    const category = menuData.categories[category_id - 1];
+    if (!category) {
+      return res.redirect('/admin/items?error=Invalid category');
+    }
+    
+    // Find and update the item
+    let itemFound = false;
+    Object.keys(menuData.menu).forEach(categoryKey => {
+      const items = menuData.menu[categoryKey];
+      const itemIndex = items.findIndex(item => item.id === id);
+      if (itemIndex !== -1) {
+        // Update the item
+        items[itemIndex] = {
+          ...items[itemIndex],
+          price: parseFloat(price),
+          image: image_url || items[itemIndex].image,
+          video: video_url || items[itemIndex].video,
+          name: { en: name },
+          description: { en: description || '' },
+          nutrition: { en: nutrition || '' },
+          ingredients: { en: ingredients || '' },
+          allergies: { en: allergies || '' },
+          prepTime: { en: prep_time || '' }
+        };
+        itemFound = true;
+      }
+    });
+    
+    if (!itemFound) {
+      return res.redirect('/admin/items?error=Item not found');
+    }
+    
+    console.log('Item updated successfully');
+    res.redirect('/admin/items?success=updated');
+  } catch (error) {
+    console.error('Error updating item:', error);
+    res.redirect('/admin/items?error=' + encodeURIComponent(error.message));
+  }
 });
 
 app.post('/admin/items/:id/delete', adminAuth, (req, res) => {
   const id = Number(req.params.id);
   console.log('Deleting item:', { id });
-  // Since we're using hardcoded data, just redirect back with a message
-  res.redirect('/admin/items?success=deleted&note=hardcoded');
+  
+  try {
+    // Find and delete the item
+    let itemFound = false;
+    Object.keys(menuData.menu).forEach(categoryKey => {
+      const items = menuData.menu[categoryKey];
+      const itemIndex = items.findIndex(item => item.id === id);
+      if (itemIndex !== -1) {
+        items.splice(itemIndex, 1);
+        itemFound = true;
+      }
+    });
+    
+    if (!itemFound) {
+      return res.redirect('/admin/items?error=Item not found');
+    }
+    
+    console.log('Item deleted successfully');
+    res.redirect('/admin/items?success=deleted');
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    res.redirect('/admin/items?error=' + encodeURIComponent(error.message));
+  }
 });
 
 // Settings
