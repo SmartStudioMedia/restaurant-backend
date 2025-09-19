@@ -282,7 +282,7 @@ app.post('/api/add-item', (req, res) => {
 });
 
 // Force reset database (for development)
-app.post('/api/reset-db', (req, res) => {
+app.get('/api/reset-db', (req, res) => {
   try {
     console.log('Resetting database...');
     reset();
