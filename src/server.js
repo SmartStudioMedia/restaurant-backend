@@ -237,6 +237,19 @@ app.post('/admin/orders/:id/status', adminAuth, (req, res) => {
 // Health
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// Homepage
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Restaurant Backend API is running!', 
+    endpoints: {
+      health: '/api/health',
+      menu: '/api/menu',
+      settings: '/api/settings',
+      admin: '/admin'
+    }
+  });
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
