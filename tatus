@@ -1,0 +1,5 @@
+[33mfb7397b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix Railway deployment - simplified server, proper build config, no external dependencies
+[33m9bbeb5e[m Complete mobile-first restaurant app rebuild - welcome page, language dropdown, main menu, item cards, cart system
+[33me01365e[m Fix admin panel to display orders from in-memory system
+[33me0ab1a2[m Fix orders API to work with dynamic menu system
+[33m6b80ade[m Fix CORS to allow all origins for frontend connection
