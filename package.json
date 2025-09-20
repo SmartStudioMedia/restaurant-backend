@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --legacy-watch src/server.js",
-    "start": "node src/server.js",
-    "build": "cd frontend && npm install && npm run build",
+    "dev": "nodemon --legacy-watch src/server-simple.js",
+    "start": "node src/server-simple.js",
+    "build": "cd frontend && npm install && npm run build && cd ..",
+    "postinstall": "cd frontend && npm install && npm run build && cd ..",
     "db:reset": "node src/db-simple.js --reset"
   },
   "keywords": [],
