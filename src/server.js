@@ -56,6 +56,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// In-memory storage for orders
+let orders = [];
+
 // In-memory menu data (can be edited and saved)
 let menuData = {
   categories: [
@@ -214,7 +217,7 @@ app.post('/api/orders', (req, res) => {
   // Generate a simple order ID (in a real app, you'd use a database)
   const orderId = Date.now();
   
-  // Store order in memory (in a real app, you'd save to database)
+  // Store order in memory
   const order = {
     id: orderId,
     order_type: orderType,
@@ -227,9 +230,11 @@ app.post('/api/orders', (req, res) => {
     items: orderItems
   };
   
-  // In a real app, you'd save this to a database
-  // For now, we'll just log it
+  // Store in our in-memory orders array
+  orders.unshift(order); // Add to beginning of array (newest first)
+  
   console.log('New order received:', order);
+  console.log('Total orders:', orders.length);
 
   res.json({ orderId, total });
 });
@@ -302,10 +307,10 @@ app.get('/admin/login', (req, res) => {
 });
 
 app.get('/admin', adminAuth, (req, res) => {
-  // Hardcoded dashboard data since we're using hardcoded menu
-  const pending = 0;
-  const confirmed = 0;
-  const totalSales = 0;
+  // Calculate stats from our in-memory orders
+  const pending = orders.filter(order => order.status === 'received').length;
+  const confirmed = orders.filter(order => order.status === 'confirmed').length;
+  const totalSales = orders.reduce((sum, order) => sum + order.total, 0);
   res.render('admin_dashboard', { pending, confirmed, totalSales });
 });
 
@@ -486,15 +491,21 @@ app.post('/admin/tables/create', adminAuth, (req, res) => {
 
 // Orders list and confirm
 app.get('/admin/orders', adminAuth, (req, res) => {
-  const orders = db.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT 200').all();
-  const itemsByOrder = db.prepare('SELECT * FROM order_items WHERE order_id = ?');
-  for (const o of orders) o.items = itemsByOrder.all(o.id);
-  res.render('orders', { orders });
+  // Use our in-memory orders array
+  const sortedOrders = orders.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  res.render('orders', { orders: sortedOrders });
 });
 app.post('/admin/orders/:id/status', adminAuth, (req, res) => {
   const id = Number(req.params.id);
   const { status } = req.body;
-  db.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, id);
+  
+  // Find and update order in our in-memory array
+  const orderIndex = orders.findIndex(order => order.id === id);
+  if (orderIndex !== -1) {
+    orders[orderIndex].status = status;
+    console.log(`Order ${id} status updated to: ${status}`);
+  }
+  
   res.redirect('/admin/orders');
 });
 
