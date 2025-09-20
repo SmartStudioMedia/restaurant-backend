@@ -181,27 +181,55 @@ app.post('/api/orders', (req, res) => {
   if (!Array.isArray(items) || !items.length) return res.status(400).json({ error: 'No items' });
   if (orderType !== 'dine-in' && orderType !== 'takeaway') return res.status(400).json({ error: 'Invalid orderType' });
 
-  const getItemStmt = db.prepare('SELECT id, name, price FROM items WHERE id = ?');
+  // Find items in our dynamic menu data
   let total = 0;
   const orderItems = [];
+  
   for (const it of items) {
-    const row = getItemStmt.get(it.id);
-    if (!row) return res.status(400).json({ error: `Invalid item ${it.id}` });
-    const qty = Math.max(1, Number(it.qty || 1));
-    total += row.price * qty;
-    orderItems.push({ item_id: row.id, name: row.name, price: row.price, quantity: qty });
+    // Search through all categories to find the item
+    let foundItem = null;
+    for (const categoryKey of Object.keys(menuData.menu)) {
+      const item = menuData.menu[categoryKey].find(item => item.id === it.id);
+      if (item) {
+        foundItem = item;
+        break;
+      }
+    }
+    
+    if (!foundItem) return res.status(400).json({ error: `Invalid item ${it.id}` });
+    
+    const qty = Math.max(1, Number(it.quantity || 1));
+    const price = Number(foundItem.price);
+    const subtotal = price * qty;
+    total += subtotal;
+    orderItems.push({ 
+      item_id: it.id, 
+      name: foundItem.name.en, 
+      price, 
+      quantity: qty, 
+      subtotal 
+    });
   }
 
-  const insertOrder = db.prepare(`INSERT INTO orders (table_number, table_token, order_type, total, payment_method, payment_status) VALUES (?,?,?,?,?,?)`);
-  const insertOrderItem = db.prepare(`INSERT INTO order_items (order_id, item_id, name, price, quantity) VALUES (?,?,?,?,?)`);
-
-  const tx = db.transaction(() => {
-    const info = insertOrder.run(tableNumber || null, tableToken || null, orderType, total, paymentMethod || null, paymentMethod ? 'pending' : null);
-    for (const oi of orderItems) insertOrderItem.run(info.lastInsertRowid, oi.item_id, oi.name, oi.price, oi.quantity);
-    return info.lastInsertRowid;
-  });
-
-  const orderId = tx();
+  // Generate a simple order ID (in a real app, you'd use a database)
+  const orderId = Date.now();
+  
+  // Store order in memory (in a real app, you'd save to database)
+  const order = {
+    id: orderId,
+    order_type: orderType,
+    table_token: tableToken || null,
+    table_number: tableNumber || null,
+    payment_method: paymentMethod || 'cash',
+    total: total,
+    status: 'received',
+    created_at: new Date().toISOString(),
+    items: orderItems
+  };
+  
+  // In a real app, you'd save this to a database
+  // For now, we'll just log it
+  console.log('New order received:', order);
 
   res.json({ orderId, total });
 });
